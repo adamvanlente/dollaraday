@@ -1,0 +1,8 @@
+config/auth.js
+config/database.js
+node_modules
+npm-debug.log
+public
+raw_illustrator/
+.DS_Store
+.sass-cache/

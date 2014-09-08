@@ -172,7 +172,7 @@ module.exports = function(passport) {
         callbackURL     : configAuth.githubAuth.callbackURL,
     },
     function(token, refreshToken, profile, done) {
-        console.log('for github found user', profile);
+
         process.nextTick(function() {
 
             User.findGithubUserById( profile.id, function(user) {
@@ -187,7 +187,7 @@ module.exports = function(passport) {
                     newUser.github.token = token;
                     newUser.github.name  = profile.displayName;
                     newUser.github.email = profile.emails[0].value;
-                    console.log('and creating', newUser);
+
                     User.createNew(newUser, function(doc) {
                         return done(null, doc);
                     });

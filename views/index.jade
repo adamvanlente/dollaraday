@@ -1,0 +1,21 @@
+extends components/base
+
+block append content
+
+  if (user)
+    if (user.github.email)
+      div.user
+        | logged in with github
+
+    include components/dad-form
+
+    include components/goal-list
+
+  else
+    a(href="/login")
+      | login
+
+  include components/scripts
+  if (user)
+    script(type="text/javascript").
+      var cal = new Highsmith('dad-form-goal-target-date');

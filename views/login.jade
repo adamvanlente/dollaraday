@@ -1,0 +1,22 @@
+extends components/base
+
+block append content
+
+  form(action="/#{msg.mode}", method="post")
+
+      include components/login-form
+
+      if (msg)
+        h3.msg= msg.mode
+
+      button(type="submit", class="#{msg.mode}")= msg.mode
+
+      span.loginScreen--socialIcons
+
+      a(href="/auth/github", class="github")
+        span(class="fa fa-github-square")
+        label
+          | github
+
+
+  include components/scripts

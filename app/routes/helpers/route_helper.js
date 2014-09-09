@@ -6,6 +6,7 @@
 var User       		   = require('../../models/user');
 var Goal       		   = require('../../models/goal');
 var nodemailer			 = require('nodemailer');
+var money     			 = require('./money_helper');
 
 // Get the authorization variables.
 var configAuth       = require('../../../config/auth');
@@ -178,13 +179,14 @@ function getGoalsBody(goals) {
                       'text-align:center;color:#F1F1F1;">' + goal.goalName +
                       '</label>' +
                   '</span>' +
-                  // FORMAT MONEY for these next two
+
                   '<span style="display:block;font-size: 12px;">' +
                     '<label style="padding:8px;text-decoration:underline;' +
                     'display:inline-block;width:40%;text-align:right;">' +
                     'Amount: </label>' +
                     '<label style="padding:8px;display:inline-block;' +
-                    'width:40%;text-align:left;">$' + goal.goalAmount +
+                    'width:40%;text-align:left;">$' +
+                    money.format(goal.goalAmount) +
                     '</label>' +
                   '</span>' +
 
@@ -193,7 +195,8 @@ function getGoalsBody(goals) {
                     'display:inline-block;width:40%;text-align:right;">' +
                     'Saved: </label>' +
                     '<label style="padding:8px;display:inline-block;' +
-                    'width:40%;text-align:left;">$' + goal.goalAmountSaved +
+                    'width:40%;text-align:left;">$' +
+                    money.format(goal.goalAmountSaved) +
                     '</label>' +
                   '</span>' +
 
@@ -214,7 +217,7 @@ function getGoalsBody(goals) {
                     '<label style="padding:8px;display:block;' +
                     'font-size: 40px;color: #2E883C;' +
                     'text-shadow: 0px 0px 15px rgba(243, 228, 228, 0.5);">' +
-                    '$' + goal.dollarsPerDay + '</label>' +
+                    '$' + money.format(goal.dollarsPerDay) + '</label>' +
                     '<label style="display: block;font-size: 12px;">' +
                     'every day!</label>' +
                   '</span>' +

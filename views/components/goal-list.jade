@@ -3,19 +3,34 @@ div.existingGoalHolder
     span.goalHolder
       span
         | Name:
-        label.goalName= user.results[i].goalName
+        input(class="goalName", value="#{user.results[i].goalName}",
+            id="#{user.results[i]._id}_dad-form-goal-name")
       span
         | Goal amount:
-      label.goalAmount= user.results[i].goalAmount
+        input(class="goalAmount", value="#{user.results[i].goalAmount}",
+            id="#{user.results[i]._id}_dad-form-goal-target-amount")
       span
         | Amount saved:
-      label.goalAmountSaved= user.results[i].goalAmountSaved
+        input(class="goalAmountSaved", value="#{user.results[i].goalAmountSaved}",
+            id="#{user.results[i]._id}_dad-form-goal-amount-saved")
       span
         | Target date:
-      label.goalTargetDate= user.results[i].goalTargetDate
+        input(class="goalTargetDate", value="#{user.results[i].goalTargetDate}",
+            id="#{user.results[i]._id}_dad-form-goal-target-date")
       span
         | Dollars per day:
-      label.dollarsPerDay= user.results[i].dollarsPerDay
+        input.dollarsPerDay(class="dollarsPerDay",
+            value="#{user.results[i].dollarsPerDay}")
       span
         | alerts:
-      label.emailAlerts= user.results[i].emailAlerts
+        input(class="emailAlerts", value="#{user.results[i].emailAlerts}",
+            id="#{user.results[i]._id}_dad-form-email-alerts")
+      button(onclick="dad.addNewGoal('#{user.results[i]._id}')")
+        | update
+
+
+//- input(id="dad-form-goal-name", placeholder="goal name")
+//- input(id="dad-form-goal-target-amount", placeholder="goal amount")
+//- input(id="dad-form-goal-amount-saved", placeholder="goal amount saved")
+//- input(id="dad-form-goal-target-date", placeholder="target date")
+//- input(type="radio", id="dad-form-email-alerts", name="dad-form-email-alerts", value="on", checked="true")

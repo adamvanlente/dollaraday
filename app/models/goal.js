@@ -40,11 +40,42 @@ var Goal = function() {
         });
     }
 
+    var _findById = function(id, callback) {
+        _model.findOne({ '_id': id }, function(err, results) {
+            if(err) {
+                fail(err);
+            } else {
+                callback(results);
+            }
+        });
+
+    }
+
+    var _update = function(id, updates, callback) {
+
+        console.log(updates)
+        callback(updates);
+        // _model.findAndModify({
+        //     query: { '_id': id },
+        //     sort: {},
+        //     update: { $inc: updates },
+        //     upsert: true
+        // }, function(err, results) {
+        //     if(err) {
+        //         fail(err);
+        //     } else {
+        //
+        //         callback(results);
+        //     }
+        // })
+    }
 
     return {
         createNew: _createNew,
         findMany: _findMany,
         schema: _schemaModel,
+        findById: _findById,
+        update: _update,
         model: _model
     }
 }();

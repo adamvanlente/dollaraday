@@ -7,7 +7,10 @@ var dad = {
     // Get the value of an input element.  Add a trailing slash to prepare it
     // for use in an http request.
     getVal: function(id) {
-        return document.getElementById(id).value.replace(/\//g, 'slash') + '/';
+        var val = document.getElementById(id).value;
+        val = val.replace(/\//g, 'slash');
+        val = val.replace(/,/g, '');
+        return val + '/';
     },
 
     // Check if a date string is valid for use as an actual date.
@@ -69,7 +72,19 @@ var dad = {
         console.log('error!!', message);
     },
 
-    addNewGoal: function() {
+    addNewGoal: function(id) {
+
+      if (id) {
+          var n = this.getVal(id + '_dad-form-goal-name');
+          var a = this.getVal(id + '_dad-form-goal-target-amount');
+          var s = this.getVal(id + '_dad-form-goal-amount-saved');
+          var d = this.getVal(id + '_dad-form-goal-target-date');
+          var e = this.getVal(id + '_dad-form-email-alerts');
+
+          this.updateExistingGoal(id, n, a, s, d, e);
+          return;
+      }
+
       var name = this.getVal('dad-form-goal-name');
       var user = this.getVal('dad-form-user');
       var amount = this.getVal('dad-form-goal-target-amount');
@@ -78,13 +93,16 @@ var dad = {
       var alerts = this.getVal('dad-form-email-alerts');
       var usrEmail = this.getVal('dad-form-user-email');
 
-      var formValidator = this.validateForm(name, user, amount, saved, usrEmail);
+      var formValidator =
+          this.validateForm(name, user, amount, saved, usrEmail);
 
       if (formValidator.success) {
 
           // Build the url for the request.
           var url = '/goal/' + user + name + amount +
-              saved + targetDate + alerts + usrEmail;
+              saved + targetDate + alerts + usrEmail + '/' + id;
+
+          console.log(url);
 
           // Make the request.
           $.ajax({
@@ -100,6 +118,26 @@ var dad = {
       } else {
           this.showFormErrorsToUser(formValidator.msg);
       }
+
+    },
+
+    updateExistingGoal: function(id, n, a, s, d, e) {
+
+      var url = '/updategoal/' + id + '/' + n + a + s + d + e;
+      console.log(url)
+
+      // Make the request.
+      $.ajax({
+         url: url,
+         type: 'POST',
+         success: function(data){
+            console.log('updated', data);
+         },
+         error: function(err) {
+             console.log(err)
+         }
+      });
+
 
     }
 

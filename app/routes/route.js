@@ -7,9 +7,9 @@ var Goal       		   = require('../models/goal');
 
 // Get the authorization variables.
 var configAuth       = require('../../config/auth');
+var configAuth       = require('../../config/auth');
 var emailer          = require('./helpers/route_helper');
 var money            = require('./helpers/money_helper');
-
 
 
 module.exports = function(app, passport) {
@@ -26,17 +26,6 @@ module.exports = function(app, passport) {
   				res.render('index.jade');
 			} else {
 					Goal.findMany(req.user.id, function(results) {
-
-              // Format the currency amounts.
-              for (var i = 0; i < results.length; i++) {
-
-                  var result             = results[i];
-
-                  result.goalAmount      = money.format(result.goalAmount);
-                  result.goalAmountSaved = money.format(result.goalAmountSaved);
-                  result.dollarsPerDay   = money.format(result.dollarsPerDay);
-
-              }
 
               // Add the results to the response.
               req.user.results = results;

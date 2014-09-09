@@ -16,10 +16,11 @@ div.existingGoalHolder
       span
         | Target date:
         input(class="goalTargetDate", value="#{user.results[i].goalTargetDate}",
-            id="#{user.results[i]._id}_dad-form-goal-target-date")
+            id="#{user.results[i]._id}_dad-form-goal-target-date", name="make-cal")
       span
         | Dollars per day:
         input.dollarsPerDay(class="dollarsPerDay",
+            id="#{user.results[i]._id}_dad-form-goal-per-day",
             value="#{user.results[i].dollarsPerDay}")
       span
         | alerts:
@@ -28,6 +29,16 @@ div.existingGoalHolder
       button(onclick="dad.addNewGoal('#{user.results[i]._id}')")
         | update
 
+
+  include scripts
+
+  script(type="text/javascript").
+    var calendars = document.getElementsByName('make-cal');
+    for (var i = 0; i < calendars.length; i++) {
+        var cal = calendars[i];
+        var options = { 'futureOnly' : true };
+        var newCal = new Highsmith(cal.id, options);
+    }
 
 //- input(id="dad-form-goal-name", placeholder="goal name")
 //- input(id="dad-form-goal-target-amount", placeholder="goal amount")

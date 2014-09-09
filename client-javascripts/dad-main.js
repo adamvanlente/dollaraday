@@ -102,8 +102,6 @@ var dad = {
           var url = '/goal/' + user + name + amount +
               saved + targetDate + alerts + usrEmail + '/' + id;
 
-          console.log(url);
-
           // Make the request.
           $.ajax({
              url: url,
@@ -124,14 +122,18 @@ var dad = {
     updateExistingGoal: function(id, n, a, s, d, e) {
 
       var url = '/updategoal/' + id + '/' + n + a + s + d + e;
-      console.log(url)
 
       // Make the request.
       $.ajax({
          url: url,
          type: 'POST',
          success: function(data){
-            console.log('updated', data);
+            document.getElementById(id + '_dad-form-goal-target-amount')
+                .value = data.goalAmount;
+            document.getElementById(id + '_dad-form-goal-amount-saved')
+                .value = data.goalAmountSaved;
+            document.getElementById(id + '_dad-form-goal-per-day')
+                .value = data.dollarsPerDay;
          },
          error: function(err) {
              console.log(err)

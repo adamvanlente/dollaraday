@@ -181,7 +181,7 @@ function getGoalsBody(goals) {
                   '</span>' +
 
                   '<span style="display:block;font-size: 12px;">' +
-                    '<label style="padding:8px;text-decoration:underline;' +
+                    '<label style="padding:8px;' +
                     'display:inline-block;width:40%;text-align:right;">' +
                     'Amount: </label>' +
                     '<label style="padding:8px;display:inline-block;' +
@@ -191,7 +191,7 @@ function getGoalsBody(goals) {
                   '</span>' +
 
                   '<span style="display:block;font-size: 12px;">' +
-                    '<label style="padding:8px;text-decoration:underline;' +
+                    '<label style="padding:8px;' +
                     'display:inline-block;width:40%;text-align:right;">' +
                     'Saved: </label>' +
                     '<label style="padding:8px;display:inline-block;' +
@@ -201,11 +201,11 @@ function getGoalsBody(goals) {
                   '</span>' +
 
                   '<span style="display:block;font-size: 12px;">' +
-                    '<label style="padding:8px;text-decoration:underline;' +
+                    '<label style="padding:8px;' +
                     'display:inline-block;width:40%;text-align:right;">' +
                     'Target date: </label>' +
                     '<label style="padding:8px;display:inline-block;' +
-                    'width:40%;text-align:left;">$' + goal.goalTargetDate +
+                    'width:40%;text-align:left;">' + goal.goalTargetDate +
                     '</label>' +
                   '</span>' +
 

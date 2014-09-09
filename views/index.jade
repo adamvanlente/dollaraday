@@ -14,11 +14,3 @@ block append content
   else
     a(href="/login")
       | login
-
-  include components/scripts
-  // If the date picker exists, make it Highsmith.
-  if (user)
-    script(type="text/javascript").
-      if (document.getElementById('dad-form-goal-target-date'))
-        var options = { 'futureOnly' : true };
-        var cal = new Highsmith('dad-form-goal-target-date', options);

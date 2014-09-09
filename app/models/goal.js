@@ -3,6 +3,7 @@
 // __________________________________________
 
 var mongoose = require('mongoose');
+var money    = require('../routes/helpers/money_helper');
 
 var Goal = function() {
 
@@ -53,21 +54,39 @@ var Goal = function() {
 
     var _update = function(id, updates, callback) {
 
-        console.log(updates)
-        callback(updates);
-        // _model.findAndModify({
-        //     query: { '_id': id },
-        //     sort: {},
-        //     update: { $inc: updates },
-        //     upsert: true
-        // }, function(err, results) {
-        //     if(err) {
-        //         fail(err);
-        //     } else {
-        //
-        //         callback(results);
-        //     }
-        // })
+        _model.findOne({ _id: id }, function(err, goal) {
+
+            updates.date            = updates.date.replace(/slash/g, '/');
+            updates.amount          = updates.amount.replace(/,/g, '');
+            updates.saved           = updates.saved.replace(/,/g, '');
+
+            goal.goalName           = updates.name;
+            goal.goalAmount         = updates.amount;
+            goal.goalAmountSaved    = updates.saved;
+            goal.goalTargetDate     = updates.date;
+            goal.emailAlerts        = updates.alerts;
+
+
+            var amountLeftToSave    = updates.amount - updates.saved;
+
+            // Calculate the days between right now and the goal date.
+            var target              = new Date(updates.date);
+            var today               = new Date();
+            var diffTime            = Math.abs(today.getTime() - target.getTime());
+            var differenceInDays    = Math.ceil(diffTime / (1000 * 3600 * 24));
+
+            // Colculate the dollars per day required to meet goal.
+            goal.dollarsPerDay      = (amountLeftToSave / differenceInDays).toFixed(2);
+
+            goal.save();
+
+            var res = goal;
+            res.goalAmount          = money.format(goal.goalAmount);
+            res.goalAmountSaved     = money.format(goal.goalAmountSaved);
+            res.dollarsPerDay       = money.format(goal.dollarsPerDay);
+
+            callback(res);
+        });
     }
 
     return {

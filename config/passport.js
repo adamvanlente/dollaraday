@@ -18,11 +18,13 @@ module.exports = function(passport) {
 
     // Serialize user for session.
     passport.serializeUser(function(user, done) {
+        console.log('serial')
         done(null, user.id);
     });
 
     // Deserialize user for session.
     passport.deserializeUser(function(id, done) {
+        console.log('deserial')
         User.findById(id, function(user) {
             done(null, user);
         });
@@ -33,23 +35,26 @@ module.exports = function(passport) {
     // LOCAL SIGNUP =======================
     // ====================================
     // ====================================
+
     passport.use('local-signup', new LocalStrategy({
-        usernameField : configAuth.emailField,
-        passwordField : configAuth.passwordField,
+        usernameField : configAuth.formFields.emailField,
+        passwordField : configAuth.formFields.passwordField,
         passReqToCallback : true
     },
     function(req, email, password, done) {
+        console.log('trying to signup');
+        var name = req.body["user-name"];
 
         process.nextTick(function() {
 
             User.findByEmail(email, function(user) {
-
-                if (user) {
+                if (user || !name || name == '') {
                     return done(null, false);
                 } else {
                     var newUser            = {};
                     newUser.local          = {};
                     newUser.local.email    = email;
+                    newUser.local.name     = name;
                     newUser.local.password = generateHash(password);
 
                     User.createNew(newUser, function(doc) {
@@ -67,8 +72,8 @@ module.exports = function(passport) {
     // ====================================
     // ====================================
     passport.use('local-login', new LocalStrategy({
-        usernameField : configAuth.emailField,
-        passwordField : configAuth.passwordField,
+        usernameField : configAuth.formFields.emailField,
+        passwordField : configAuth.formFields.passwordField,
         passReqToCallback : true
     },
     function(req, email, password, done) {
@@ -77,6 +82,9 @@ module.exports = function(passport) {
 
             if (!user)
                 return done(null, false);
+            console.log('trying to login', user, password);
+
+            console.log(!validPassword(password, user.local.password));
 
             if (!validPassword(password, user.local.password))
                 return done(null, false);

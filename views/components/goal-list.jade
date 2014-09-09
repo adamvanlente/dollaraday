@@ -1,3 +1,21 @@
-div.thing
-- for (var i = 0; i < user.results.length; i++)
-  li= user.results[i]
+div.existingGoalHolder
+  - for (var i = 0; i < user.results.length; i++)
+    span.goalHolder
+      span
+        | Name:
+        label.goalName= user.results[i].goalName
+      span
+        | Goal amount:
+      label.goalAmount= user.results[i].goalAmount
+      span
+        | Amount saved:
+      label.goalAmountSaved= user.results[i].goalAmountSaved
+      span
+        | Target date:
+      label.goalTargetDate= user.results[i].goalTargetDate
+      span
+        | Dollars per day:
+      label.dollarsPerDay= user.results[i].dollarsPerDay
+      span
+        | alerts:
+      label.emailAlerts= user.results[i].emailAlerts

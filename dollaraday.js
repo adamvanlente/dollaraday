@@ -9,6 +9,7 @@ var express      = require('express');
 var port         = 3000;
 var mongoose     = require('mongoose');
 var path         = require('path');
+var nodemailer   = require('nodemailer');
 
 var morgan       = require('morgan');
 var session      = require('express-session');
@@ -17,18 +18,18 @@ var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var configDB     = require('./config/database.js');
 
+// Connect to database.
+mongoose.connect(configDB.url);
+
 // Set up the express application.
 var app = express();
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser());
 
-// Connect to database.
-mongoose.connect(configDB.url);
-
 // Get Passport set up.
 require('./config/passport')(passport);
-app.use(session({ secret: 'dollarAday#8912' }));
+app.use(session({ secret: 'dollarAday8912' }));
 app.use(passport.initialize());
 app.use(passport.session());
 

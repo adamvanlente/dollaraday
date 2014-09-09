@@ -16,6 +16,9 @@ block append content
       | login
 
   include components/scripts
+  // If the date picker exists, make it Highsmith.
   if (user)
     script(type="text/javascript").
-      var cal = new Highsmith('dad-form-goal-target-date');
+      if (document.getElementById('dad-form-goal-target-date'))
+        var options = { 'futureOnly' : true };
+        var cal = new Highsmith('dad-form-goal-target-date', options);

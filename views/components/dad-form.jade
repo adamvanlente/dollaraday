@@ -5,18 +5,22 @@ div.dad-form
   // Values must be ints
   // Date must be in the future
 
-  form(action="/newgoal", method="post")
-    input(name="dad-form-goal-name", placeholder="goal name")
-    input(name="dad-form-goal-target-amount", placeholder="goal amount")
-    input(name="dad-form-goal-amount-saved", placeholder="goal amount saved")
-    input(name="dad-form-goal-target-date", placeholder="target date", id="dad-form-goal-target-date")
-    input(type="radio", name="dad-form-email-alerts", value="on", checked="true")
+  div.newGoalHolder
+    input(id="dad-form-goal-name", placeholder="goal name")
+    input(id="dad-form-goal-target-amount", placeholder="goal amount")
+    input(id="dad-form-goal-amount-saved", placeholder="goal amount saved")
+    input(id="dad-form-goal-target-date", placeholder="target date")
+    input(type="radio", id="dad-form-email-alerts", name="dad-form-email-alerts", value="on", checked="true")
     label
       | on
     input(type="radio", name="dad-form-email-alerts", value="off")
     label
       | off
-    input(type="hidden", value="#{user._id}", name="dad-form-user")
+    input(type="hidden", value="#{user._id}", id="dad-form-user")
+    if (user.local.email)
+      input(type="hidden", value="#{user.local.email}", id="dad-form-user-email")
+    if (user.github.email)
+      input(type="hidden", value="#{user.github.email}", id="dad-form-user-email")
 
-    button(type="submit")
+    button(onclick="dad.addNewGoal()")
       | add new goal

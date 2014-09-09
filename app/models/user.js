@@ -11,6 +11,7 @@ var User = function() {
         local            : {
             email        : String,
             password     : String,
+            name         : String
         },
         facebook         : {
             id           : String,
@@ -126,6 +127,16 @@ var User = function() {
         });
     }
 
+    var _findAll = function(callback) {
+        _model.find({}, function(err, doc) {
+            if(err) {
+                fail(err);
+            } else {
+                callback(doc);
+            }
+        });
+    }
+
     return {
         createNew: _createNew,
         findByEmail: _findByEmail,
@@ -137,6 +148,7 @@ var User = function() {
         findGithubUserByEmail: _findGithubUserByEmail,
         findGithubUserById: _findGithubUserById,
         schema: _schemaModel,
+        findAll: _findAll,
         model: _model
     }
 }();

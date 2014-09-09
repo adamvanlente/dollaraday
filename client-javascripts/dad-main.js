@@ -14,8 +14,8 @@ var dad = {
     },
 
     // Check if a date string is valid for use as an actual date.
-    isValidDate: function() {
-        var date = document.getElementById('dad-form-goal-target-date').value;
+    isValidDate: function(date) {
+        date = date.replace(/slash/g, '/');
         if (!date || date == '') {
           // Empty string is invalid, for our purposes.
           return false;
@@ -25,46 +25,63 @@ var dad = {
         return (new Date(date)) != 'Invalid Date';
     },
 
-    validateForm: function(name, user, amount, saved, usrEmail) {
+    // Don't let users enter amounts over 100 Billion.
+    amountIsTooLarge: function(amount) {
+        amount = amount.split('.')[0];
+        return amount > 12;
+    },
+
+    // Validate the form.  Return success, message and (if the exist)
+    // inputs that contain errors.
+    validateForm: function(name, user, amount, date, saved, usrEmail, id) {
+      id = id ? String(id) + '_' : '';
 
       // Set an empty message, used in event of error.
       var msg = '';
       var errorInputs = [];
 
-      var invalidAmount = isNaN(parseFloat(amount));
-      if (invalidAmount) {
+      // Amount must be a number.
+      if (isNaN(parseFloat(amount))) {
           msg += 'Amount must be a number.  '
-          errorInputs.push('dad-form-goal-target-amount');
+          errorInputs.push(id + '');
       }
 
-      var invalidSaved = isNaN(parseFloat(saved));
-      if (invalidSaved) {
+      // Amount must be less that 100 Bilion.
+      if (this.amountIsTooLarge(amount)) {
+          msg += 'Amount is too large.  Dream big & all, but we only handle' +
+              'numbers to the hundreds of billions.';
+          errorInputs.push(id + 'dad-form-goal-target-amount');
+      }
+
+      // Amount saved my be a number.
+      if (isNaN(parseFloat(saved))) {
           msg += 'Amount saved must be a number.  ';
-          errorInputs.push('dad-form-goal-amount-saved');
+          errorInputs.push(id + 'dad-form-goal-amount-saved');
       }
 
-      var validDate = this.isValidDate();
-      if (!validDate) {
+      // Date must be valid and after today.
+      if (!this.isValidDate(date)) {
           msg += 'Date must be a valid date in the future, eg: 12/31/2040.  ';
-          errorInputs.push('dad-form-goal-target-date');
+          errorInputs.push(id + 'dad-form-goal-target-date');
       }
 
+      // Name must be provided.
       var validName = name != '/' && name != '';
       if (!validName) {
           msg += 'Goal must have a name.  ';
-          errorInputs.push('dad-form-goal-name');
+          errorInputs.push(id + 'dad-form-goal-name');
       }
 
       var validUser = user != '/' && user != '';
       var validEmail = usrEmail != '/' && usrEmail != '';
-      var success = !invalidAmount && !invalidSaved && validDate && validName &&
-          validUser && validEmail;
+      var success = !errorInputs.length && validUser && validEmail;
 
       // Return success status and message.  Message only has content if
       // there are errors.
       return {
           success: success,
-          msg: msg
+          msg: msg,
+          inputs: errorInputs
       };
     },
 
@@ -74,27 +91,17 @@ var dad = {
 
     addNewGoal: function(id) {
 
-      if (id) {
-          var n = this.getVal(id + '_dad-form-goal-name');
-          var a = this.getVal(id + '_dad-form-goal-target-amount');
-          var s = this.getVal(id + '_dad-form-goal-amount-saved');
-          var d = this.getVal(id + '_dad-form-goal-target-date');
-          var e = this.getVal(id + '_dad-form-email-alerts');
-
-          this.updateExistingGoal(id, n, a, s, d, e);
-          return;
-      }
-
-      var name = this.getVal('dad-form-goal-name');
       var user = this.getVal('dad-form-user');
+      var name = this.getVal('dad-form-goal-name');
       var amount = this.getVal('dad-form-goal-target-amount');
       var saved = this.getVal('dad-form-goal-amount-saved');
       var targetDate = this.getVal('dad-form-goal-target-date');
       var alerts = this.getVal('dad-form-email-alerts');
       var usrEmail = this.getVal('dad-form-user-email');
+      var date = document.getElementById('dad-form-goal-target-date').value;
 
       var formValidator =
-          this.validateForm(name, user, amount, saved, usrEmail);
+          this.validateForm(name, user, amount, date, saved, usrEmail);
 
       if (formValidator.success) {
 
@@ -117,6 +124,18 @@ var dad = {
           this.showFormErrorsToUser(formValidator.msg);
       }
 
+    },
+
+    updateGoal: function(id) {
+        var user = this.getVal('dad-form-user');
+        var n = this.getVal(id + '_dad-form-goal-name');
+        var a = this.getVal(id + '_dad-form-goal-target-amount');
+        var s = this.getVal(id + '_dad-form-goal-amount-saved');
+        var d = this.getVal(id + '_dad-form-goal-target-date');
+        var e = this.getVal(id + '_dad-form-email-alerts');
+        var formValidator = this.validateForm(n, user, a, d, s, e, id);
+        this.updateExistingGoal(id, n, a, s, d, e);
+        return;
     },
 
     updateExistingGoal: function(id, n, a, s, d, e) {

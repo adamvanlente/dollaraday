@@ -1,17 +1,19 @@
 // ******************************************
 // Function that sends an email about a user's
-// goals.
+// goals.  It assists a route found in route.js
+// This file will run silently, so errors are
+// logged to the console.
 // __________________________________________
 
 var User       		   = require('../../models/user');
 var Goal       		   = require('../../models/goal');
 var nodemailer			 = require('nodemailer');
-var money     			 = require('./money_helper');
+var numbers    			 = require('./numbers_helper');
 
 // Get the authorization variables.
 var configAuth       = require('../../../config/auth');
 
-// create reusable transporter object using SMTP transport
+// Create a transporter object with Nodemailer.
 var transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
@@ -47,7 +49,10 @@ function getUserGoals(user) {
         var name            = userDetails.name;
         var firstName       = name.split(' ')[0];
 
-        Goal.findMany(id, function(goals) {
+        var sortParams = {sort: {goalName: 1}};
+        Goal.findMany(id, sortParams, function(goals) {
+
+            // Create a new object that stores a user and its goals together.
             var usr         = {};
             usr.id          = id;
             usr.name        = name;
@@ -67,6 +72,7 @@ function getUserGoals(user) {
                     goalsTurnedOn = true;
                 }
             }
+
             if (!goalsTurnedOn) {
                 console.log('This user has no email notification turned on',
                     usr);
@@ -186,7 +192,7 @@ function getGoalsBody(goals) {
                     'Amount: </label>' +
                     '<label style="padding:8px;display:inline-block;' +
                     'width:40%;text-align:left;">$' +
-                    money.format(goal.goalAmount) +
+                    numbers.format(goal.goalAmount) +
                     '</label>' +
                   '</span>' +
 
@@ -196,7 +202,7 @@ function getGoalsBody(goals) {
                     'Saved: </label>' +
                     '<label style="padding:8px;display:inline-block;' +
                     'width:40%;text-align:left;">$' +
-                    money.format(goal.goalAmountSaved) +
+                    numbers.format(goal.goalAmountSaved) +
                     '</label>' +
                   '</span>' +
 
@@ -217,7 +223,7 @@ function getGoalsBody(goals) {
                     '<label style="padding:8px;display:block;' +
                     'font-size: 40px;color: #2E883C;' +
                     'text-shadow: 0px 0px 15px rgba(243, 228, 228, 0.5);">' +
-                    '$' + money.format(goal.dollarsPerDay) + '</label>' +
+                    '$' + numbers.format(goal.dollarsPerDay) + '</label>' +
                     '<label style="display: block;font-size: 12px;">' +
                     'every day!</label>' +
                   '</span>' +

@@ -26,7 +26,7 @@ div.existingGoalHolder
         | alerts:
         input(class="emailAlerts", value="#{user.results[i].emailAlerts}",
             id="#{user.results[i]._id}_dad-form-email-alerts")
-      button(onclick="dad.addNewGoal('#{user.results[i]._id}')")
+      button(onclick="dad.updateGoal('#{user.results[i]._id}')")
         | update
 
 

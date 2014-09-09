@@ -18,13 +18,11 @@ module.exports = function(passport) {
 
     // Serialize user for session.
     passport.serializeUser(function(user, done) {
-        console.log('serial')
         done(null, user.id);
     });
 
     // Deserialize user for session.
     passport.deserializeUser(function(id, done) {
-        console.log('deserial')
         User.findById(id, function(user) {
             done(null, user);
         });
@@ -42,7 +40,7 @@ module.exports = function(passport) {
         passReqToCallback : true
     },
     function(req, email, password, done) {
-        console.log('trying to signup');
+
         var name = req.body["user-name"];
 
         process.nextTick(function() {
@@ -82,9 +80,6 @@ module.exports = function(passport) {
 
             if (!user)
                 return done(null, false);
-            console.log('trying to login', user, password);
-
-            console.log(!validPassword(password, user.local.password));
 
             if (!validPassword(password, user.local.password))
                 return done(null, false);

@@ -1,9 +1,9 @@
 // ******************************************
-// Schema for User accounts
+// Schema for Goals.
 // __________________________________________
 
 var mongoose = require('mongoose');
-var money    = require('../routes/helpers/money_helper');
+var numbers  = require('../routes/helpers/numbers_helper');
 
 var Goal = function() {
 
@@ -21,6 +21,7 @@ var Goal = function() {
 
     var _model = mongoose.model('Goal', _schemaModel);
 
+    // Create a new Goal
     var _createNew = function(goalObject, callback) {
         _model.create(goalObject, function(err, doc) {
             if(err) {
@@ -31,8 +32,11 @@ var Goal = function() {
         });
     };
 
-    var _findMany = function(userId, callback) {
-        _model.find({ 'goalUser' : userId}, function(err, results) {
+    // Find many Goals at once by user.  Allow for sorting.
+    var _findMany = function(userId, sortParams, callback) {
+        _model.find({ 'goalUser' : userId}, {}, sortParams,
+            function(err, results) {
+
             if(err) {
                 fail(err);
             } else {
@@ -41,6 +45,7 @@ var Goal = function() {
         });
     }
 
+    // Find one goal by its _id.
     var _findById = function(id, callback) {
         _model.findOne({ '_id': id }, function(err, results) {
             if(err) {
@@ -52,39 +57,38 @@ var Goal = function() {
 
     }
 
+    // Update an existing Goal.
     var _update = function(id, updates, callback) {
 
         _model.findOne({ _id: id }, function(err, goal) {
 
+            // Santize user input (form has been validated client-side).
             updates.date            = updates.date.replace(/slash/g, '/');
             updates.amount          = updates.amount.replace(/,/g, '');
             updates.saved           = updates.saved.replace(/,/g, '');
 
+            // Update the Mongoose/Mongo object with new properties.
             goal.goalName           = updates.name;
             goal.goalAmount         = updates.amount;
             goal.goalAmountSaved    = updates.saved;
             goal.goalTargetDate     = updates.date;
             goal.emailAlerts        = updates.alerts;
 
-
+            // Calculate dollars per day to reach your goal.
             var amountLeftToSave    = updates.amount - updates.saved;
+            goal.dollarsPerDay      = numbers.getDollarsPerDay(
+                updates.date, amountLeftToSave)
 
-            // Calculate the days between right now and the goal date.
-            var target              = new Date(updates.date);
-            var today               = new Date();
-            var diffTime            = Math.abs(today.getTime() - target.getTime());
-            var differenceInDays    = Math.ceil(diffTime / (1000 * 3600 * 24));
-
-            // Colculate the dollars per day required to meet goal.
-            goal.dollarsPerDay      = (amountLeftToSave / differenceInDays).toFixed(2);
-
+            // Save the item.
             goal.save();
 
+            // Reformat the objects numbers for display.
             var res = goal;
-            res.goalAmount          = money.format(goal.goalAmount);
-            res.goalAmountSaved     = money.format(goal.goalAmountSaved);
-            res.dollarsPerDay       = money.format(goal.dollarsPerDay);
+            res.goalAmount          = numbers.format(goal.goalAmount);
+            res.goalAmountSaved     = numbers.format(goal.goalAmountSaved);
+            res.dollarsPerDay       = numbers.format(goal.dollarsPerDay);
 
+            // Send the updated Goal back to client.
             callback(res);
         });
     }

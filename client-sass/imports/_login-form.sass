@@ -1,0 +1,86 @@
+.loginForm
+  display: block
+  margin: 0 auto
+  width: $doc-width
+  text-align: center
+  margin-top: 24px
+
+  +break-for(iphone)
+    width: $phone-doc-width
+
+  h3
+    display: block
+    font-family: "Alegreya Sans", sans-serif
+    color: rgba(255, 255, 255, 0.44)
+    font-size: 24px
+
+  button.signup,
+  button.login
+    display: block
+    width: 240px
+    margin: 0 auto
+    -webkit-appearance: none
+    border: 1px solid
+    padding: 12px
+    margin-bottom: 32px
+    color: #fff
+    border-radius: 2px
+    font-family: "Alegreya Sans", sans-serif
+    font-size: 24px
+    background: none
+    cursor: pointer
+    +trans($easybreezy)
+
+    &:hover
+      color: $med-green
+      background-color: #fff
+
+  span
+    display: block
+
+    input
+      display: block
+      width: 200px
+      margin: 12px auto
+      -webkit-appearance: none
+      border: 1px solid
+      color: #65aa83
+      padding: 8px
+      border-radius: 3px
+      +break-for(iphone)
+        width: 225px
+        padding: 8px
+        font-size: 16px
+
+  a
+    display: block
+    width: 150px
+    margin: 8px auto
+    font-family: "Alegreya Sans", sans-serif
+    text-decoration: none
+    text-align: center
+    padding: 8px
+    border-radius: 2px
+    +trans($easybreezy)
+
+    &.signup
+      background-color: rgb(48, 95, 72)
+      color: white
+
+    &.login
+      background-color: rgb(206, 198, 198)
+      color: white
+
+    &.github
+      background-color: #414242
+      color: white
+
+    &:hover
+      opacity: 0.8
+
+    span
+      display: inline-block
+      width: 20%
+    label
+      display: inline-block
+      width: 60%

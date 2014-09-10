@@ -1,0 +1,30 @@
+.header--image
+  display: block
+  height: 75px
+  width: 75px
+  background-image: url("/img/logo_1.png")
+  background-repeat: no-repeat
+  background-size: 70px
+  margin: 12px auto
+  text-align: center
+
+.header--text
+  font-family: "Alegreya Sans", sans-serif
+  font-size: 24px
+  color: rgba(245, 245, 245, 0.58)
+  width: $doc-width
+  text-align: center
+  margin: 0 auto
+  font-weight: 900
+  display: block
+  padding: 4px
+
+  +break-for(iphone)
+    width: $phone-doc-width
+
+
+.header--logo
+  padding: 10px
+  display: block
+  position: absolute
+  color: rgba(255, 255, 255, 0.29)

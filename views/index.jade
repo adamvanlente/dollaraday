@@ -2,6 +2,8 @@ extends components/base
 
 block append content
 
+  include components/header
+
   if (user)
     if (user.github.email)
       div.user
@@ -12,5 +14,5 @@ block append content
     include components/goal-list
 
   else
-    a(href="/login")
-      | login
+
+    include components/intro

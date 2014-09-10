@@ -1,0 +1,73 @@
+.intro
+  display: block
+  width: $doc-width
+  margin: 0 auto
+  text-align: center
+  margin-top: 24px
+  border: 1px solid white
+  border-radius: 4px
+
+  +break-for(iphone)
+    width: $phone-doc-width
+
+  a
+    display: block
+    font-family: "Montserrat", sans-serif
+    background-color: #fff
+    padding: 8px
+    text-decoration: none
+    border: 1px solid
+    margin: 24px 48px
+    border-radius: 2px
+    color: $med-green
+    +trans($easybreezy)
+
+    &:hover
+      background-color: $med-green
+      color: #fff
+
+
+.intro--item
+  font-family: "Montserrat", sans-serif
+  display: block
+  border-bottom: 1px solid white
+  margin: 0 auto
+  width: 300px
+
+  +break-for(iphone)
+    width: 225px
+
+.intro--item__header
+  display: block
+  font-family: "Alegreya Sans", sans-serif
+  padding: 22px
+  font-size: 34px
+  font-weight: 800
+  color: #386B83
+  text-shadow: 0 2px 0 #B9B7B7
+
+.intro--item__icon
+  display: inline-block
+  background-color: white
+  padding: 4px
+  margin: 8px
+  color: #65aa83
+  border-radius: 4px
+  font-size: 32px
+  width: 32px
+  height: 32px
+  vertical-align: middle
+
+.intro--item__desc
+  display: inline-block
+  color: white
+  border-radius: 4px
+  font-size: 17px
+  height: 24px
+  width: 200px
+  padding: 22px
+  vertical-align: middle
+
+  +break-for(iphone)
+    width: 120px
+    font-size: 14px

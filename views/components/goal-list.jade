@@ -1,44 +1,55 @@
 div.existingGoalHolder
   - for (var i = 0; i < user.results.length; i++)
-    span.goalHolder
-      span
-        | Name:
-        input(class="goalName", value="#{user.results[i].goalName}",
-            id="#{user.results[i]._id}_dad-form-goal-name")
-      span
-        | Goal amount:
-        input(class="goalAmount", value="#{user.results[i].goalAmount}",
-            id="#{user.results[i]._id}_dad-form-goal-target-amount")
-      span
-        | Amount saved:
-        input(class="goalAmountSaved", value="#{user.results[i].goalAmountSaved}",
-            id="#{user.results[i]._id}_dad-form-goal-amount-saved")
-      span
-        | Target date:
-        input(class="goalTargetDate", value="#{user.results[i].goalTargetDate}",
-            id="#{user.results[i]._id}_dad-form-goal-target-date", name="make-cal")
-      span
-        | Dollars per day:
-        input.dollarsPerDay(class="dollarsPerDay",
-            id="#{user.results[i]._id}_dad-form-goal-per-day",
-            value="#{user.results[i].dollarsPerDay}")
-      span
-        | alerts:
-        input(class="emailAlerts", value="#{user.results[i].emailAlerts}",
-            id="#{user.results[i]._id}_dad-form-email-alerts")
-      button(onclick="dad.updateGoal('#{user.results[i]._id}')")
-        | update
+    span(id="#{user.results[i]._id}", name="goal-list-item",
+      class="goal--header")
+      label= user.results[i].goalName
+      em
+        | &larr; swipe left to view details
+
+    div(class="goal--itemHolder", id="goalHolder_#{user.results[i]._id}")
+      div(class="goal_itemHolder__item animated bounceInLeft",
+        id="goalItemHolder_#{user.results[i]._id}")
+        h1= user.results[i].goalName
+        span
+          label
+            | Name:
+          input(class="goalName", value="#{user.results[i].goalName}",
+              id="#{user.results[i]._id}_dad-form-goal-name")
+        span
+          label
+            | Goal amount:
+          input(class="goalAmount", value="#{user.results[i].goalAmount}",
+              id="#{user.results[i]._id}_dad-form-goal-target-amount")
+        span
+          label
+            | Amount saved:
+          input(class="goalAmountSaved", value="#{user.results[i].goalAmountSaved}",
+              id="#{user.results[i]._id}_dad-form-goal-amount-saved")
+        span
+          label
+            | Target date:
+          input(class="goalTargetDate", value="#{user.results[i].goalTargetDate}",
+              id="#{user.results[i]._id}_dad-form-goal-target-date", name="make-cal")
+        span
+          label
+            | Dollars per day:
+          input.dollarsPerDay(class="dollarsPerDay",
+              id="#{user.results[i]._id}_dad-form-goal-per-day",
+              value="#{user.results[i].dollarsPerDay}")
+        span
+          label
+            | alerts:
+          input(class="emailAlerts", value="#{user.results[i].emailAlerts}",
+              id="#{user.results[i]._id}_dad-form-email-alerts")
+        button(onclick="dad.main.updateGoal('#{user.results[i]._id}')")
+          | update
 
 
   include scripts
 
   script(type="text/javascript").
-    var calendars = document.getElementsByName('make-cal');
-    for (var i = 0; i < calendars.length; i++) {
-        var cal = calendars[i];
-        var options = { 'futureOnly' : true };
-        var newCal = new Highsmith(cal.id, options);
-    }
+    dad.highsmith.loadCalendars();
+    dad.hammer.setGoalSliders();
 
 //- input(id="dad-form-goal-name", placeholder="goal name")
 //- input(id="dad-form-goal-target-amount", placeholder="goal amount")

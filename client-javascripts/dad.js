@@ -2,11 +2,16 @@
  * Dollar A Day Namespace.
  */
 
-var dad = {
+var dad = dad || {};
+
+dad.main = {
+
+    previousUpdatedId: false,
 
     // Get the value of an input element.  Add a trailing slash to prepare it
     // for use in an http request.
     getVal: function(id) {
+        console.log(id);
         var val = document.getElementById(id).value;
         val = val.replace(/\//g, 'slash');
         val = val.replace(/,/g, '');
@@ -147,6 +152,17 @@ var dad = {
          url: url,
          type: 'POST',
          success: function(data){
+            dad.main.previousUpdatedId = id;
+            document.getElementById('goalItemHolder_' + id).className =
+                'goal_itemHolder__item animated bounceOutUp';
+
+            setTimeout(function() {
+              document.getElementById('goalHolder_' +
+                  dad.main.previousUpdatedId).style.display = 'none';
+              document.getElementById('goalItemHolder_' + id).className =
+                  'goal_itemHolder__item animated bounceInDown';
+            }, 1000)
+
             document.getElementById(id + '_dad-form-goal-target-amount')
                 .value = data.goalAmount;
             document.getElementById(id + '_dad-form-goal-amount-saved')

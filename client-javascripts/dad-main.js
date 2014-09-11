@@ -6,6 +6,8 @@ var dad = dad || {};
 
 dad.main = {
 
+    timeoutInterval: 2500,
+
     monthDict: [ 'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'],
 
@@ -134,7 +136,7 @@ dad.main = {
             goal._id, goal.emailAlerts, 'alerts', 'email', span);
 
         var formButton = dad.main.create('button');
-        var onclick = 'dad.main.makeUpdateRequest(\'' + goal._id + '\')';
+        var onclick = 'dad.main.validateupdateGoalForm(\'' + goal._id + '\')';
         formButton.innerHTML = 'update!';
         formButton.setAttribute('onclick', onclick);
         formButton.className = 'update';
@@ -198,24 +200,116 @@ dad.main = {
         }
     },
 
-    makeUpdateRequest: function(id) {
+    validateupdateGoalForm: function(id) {
         var formElements = document.getElementsByName(id + '_goalForm');
+
+        var errorInputs = [];
+        var newGoalUrl = '/updategoal/' + id + '/';
+
         for (var i = 0; i < formElements.length; i++) {
             var el = formElements[i];
-            console.log(el.className, el.id, el.value);
 
-            // existingGoal--name 540e38fba973726e93000002_existingGoal--name Amsterdam production.js:289
-            // existingGoal--amount 540e38fba973726e93000002_existingGoal--amount 2,400 production.js:289
-            // existingGoal--amountSaved 540e38fba973726e93000002_existingGoal--amountSaved 1,200 production.js:289
-            // existingGoal--date 540e38fba973726e93000002_existingGoal--date 11/31/2014 production.js:289
-            // existingGoal--email 540e38fba973726e93000002_existingGoal--email on
+            if (el.className == 'existingGoal--name') {
+                if (el.value == '') {
+                    errorInputs.push(el.className);
+                } else {
+                    newGoalUrl += el.value + '/';
+                }
+            }
 
+            if (el.className == 'existingGoal--amount' ||
+                el.className == 'existingGoal--amountSaved') {
+                    el.value = parseFloat(el.value.replace(/,/g, ''));
 
+                    if (isNaN(el.value) || parseInt(el.value) < 0) {
+                        errorInputs.push(el.className);
+                    } else {
+                        newGoalUrl += el.value + '/';
+                    }
+            }
+
+            if (el.className == 'existingGoal--date') {
+                var testDate = new Date(el.value);
+                if (testDate == 'Invalid Date') {
+                    errorInputs.push(el.className);
+                } else {
+                    newGoalUrl += el.value.replace(/\//g, 'slash') + '/';
+                }
+            }
+
+            if (el.className == 'existingGoal--email') {
+                newGoalUrl += el.value;
+            }
+        }
+        if (errorInputs.length > 0) {
+            dad.main.showFormErrors(errorInputs);
+        } else {
+            dad.main.makeUpdateRequest(newGoalUrl);
+            dad.main.updateGoal(id, true);
         }
     },
 
+    showFormErrors: function(errors) {
+        for (var i = 0; i < errors.length; i++) {
+            var className = errors[i];
+            var inputs = document.getElementsByClassName(className);
+            for (var j = 0; j < inputs.length; j++) {
+                var el = inputs[j];
+                el.className += ' error-input';
+                el.style.backgroundColor = 'rgb(250, 202, 202)';
+            }
+        }
+
+        var msg = 'Some form fields are incorrect.';
+        dad.main.errorMessage(msg);
+
+        dad.main.clearFormErrors();
+    },
+
+    clearFormErrors: function() {
+        setTimeout(function() {
+            var errors = document.getElementsByClassName('error-input');
+            for (var i = 0; i < errors.length; i++) {
+                var el = errors[i];
+                el.className = el.className.replace('error-input', '');
+                el.style.backgroundColor = '#faf8f8';
+            }
+        }, dad.main.timeoutInterval);
+    },
+
+    makeUpdateRequest: function(url) {
+        console.log(url);
+        dad.main.ajax(url, dad.main.successMessage, dad.main.errorMessage)
+    },
+
     errorMessage: function(msg) {
-        console.log('error', msg);
+        var errorDiv = document.getElementById('errorMessage');
+        var errorMsg = document.getElementById('errorMessageContent');
+
+        errorDiv.className = errorDiv.className.replace('hidden', 'vis');
+        errorMsg.innerHTML = msg;
+
+        setTimeout(function() {
+          document.getElementById('errorMessage').className =
+              document.getElementById(
+                'errorMessage').className.replace('vis', 'hidden');
+        }, dad.main.timeoutInterval);
+    },
+
+    successMessage: function(data) {
+        console.log(data)
+        var msg = 'updated stuff';
+        var successDiv = document.getElementById('successMessage');
+        var successMsg = document.getElementById('successMessageContent');
+
+        successDiv.className = successDiv.className.replace('hidden', 'vis');
+        successMsg.innerHTML = msg;
+
+        setTimeout(function() {
+          document.getElementById('successMessage').className =
+              document.getElementById(
+                'successMessage').className.replace('vis', 'hidden');
+        }, dad.main.timeoutInterval);
     },
 
     ajax: function(url, successCb, errorCb) {

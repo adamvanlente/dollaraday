@@ -86,7 +86,7 @@ module.exports = function(app, passport) {
   // UPDATE EXISTING GOAL (post only) ===
   // ====================================
   // ====================================
-  app.post('/updategoal/:id/:name/:amount/:saved/:date/:alerts', function(req, res) {
+  app.get('/updategoal/:id/:name/:amount/:saved/:date/:alerts', function(req, res) {
 
       var updates = {
           id: req.params.id,
@@ -101,8 +101,11 @@ module.exports = function(app, passport) {
           res.json(goal);
       });
 
-
   });
+
+  app.get('/updategoal', function(req, res){
+      res.json(['thing']);
+  })
 
   // ====================================
   // ====================================

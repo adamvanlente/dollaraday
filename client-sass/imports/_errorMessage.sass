@@ -1,0 +1,35 @@
+.errorMessage
+  display: block
+  position: fixed
+  left: 0
+  right: 0
+  z-index: 3
+  +trans($easyslider)
+
+  &.hidden
+    top: -1000px
+    +break-for(iphone)
+      top: none
+      bottom: -1000px
+  &.vis
+    top: 0
+
+    +break-for(iphone)
+      top: none
+      bottom: 20px
+
+
+.errorMessageContent
+  display: block
+  background: #E27E7E
+  padding: 12px
+  width: 50%
+  margin: 0 auto
+  color: rgba(252, 247, 247, 0.91)
+  text-align: center
+  box-shadow: 0 2px rgba(0, 0, 0, 0.1)
+  margin-top: 25px
+  font-size: 13px
+  font-family: "Helvetica", sans-serif
+  +break-for(iphone)
+    width: 275px

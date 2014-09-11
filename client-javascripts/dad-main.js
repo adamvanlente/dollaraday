@@ -34,6 +34,7 @@ dad.main = {
     showExistingGoals: function(goals) {
 
         var goalDiv = dad.main.get('existingGoals');
+        goalDiv.innerHTML = '';
 
         for (var i = 0; i < goals.length; i++) {
 
@@ -121,31 +122,38 @@ dad.main = {
         var span = dad.main.create('span');
         span.className = 'goalUpdateForm';
 
-        dad.main.createInput(
+        dad.main.createInput('text',
             goal._id, goal.goalName, 'name', 'name', span);
-        dad.main.createInput(
+        dad.main.createInput('tel',
             goal._id, goal.goalAmount, 'amount', 'amount', span);
-        dad.main.createInput(
+        dad.main.createInput('tel',
             goal._id, goal.goalAmountSaved, 'amount saved', 'amountSaved', span);
-        dad.main.createInput(
+        dad.main.createInput('text',
             goal._id, goal.goalTargetDate, 'target date', 'date', span);
-        dad.main.createInput(
+        dad.main.createInput('text',
             goal._id, goal.emailAlerts, 'alerts', 'email', span);
-        dad.main.createInput(goal._id, goal.dollarsPerDay, 'dollars per day',
-            'dollarsPerDay', span);
 
         var formButton = dad.main.create('button');
-        var onclick = 'dad.main.updateGoal(\'' + goal._id + '\')';
+        var onclick = 'dad.main.makeUpdateRequest(\'' + goal._id + '\')';
         formButton.innerHTML = 'update!';
         formButton.setAttribute('onclick', onclick);
+        formButton.className = 'update';
         span.appendChild(formButton);
+
+        var cancelButton = dad.main.create('button');
+        var onclick =
+            'dad.main.updateGoal(\'' + goal._id + '\', \'' + true + '\')';
+        cancelButton.innerHTML = 'cancel';
+        cancelButton.setAttribute('onclick', onclick);
+        cancelButton.className = 'cancel';
+        span.appendChild(cancelButton);
 
         div.appendChild(span);
 
         return div;
     },
 
-    createInput: function(id, value, labelText, className, parent) {
+    createInput: function(type, id, value, labelText, className, parent) {
 
         var span = dad.main.create('span');
 
@@ -155,22 +163,55 @@ dad.main = {
         className = 'existingGoal--' + className;
 
         var input = dad.main.create('input');
-        input.type = 'text';
-        input.id = value + '_' + className;
+        input.type = type;
+        input.id = id + '_' + className;
         input.className = className;
         input.innerHTML = value;
         input.value = value;
         input.name = id + '_goalForm';
+        if (className == 'existingGoal--email') {
+            input.readOnly = true;
+            var onclick = 'dad.main.toggleEmail(\'' + id + '\')';
+            input.setAttribute('onclick', onclick);
+        }
 
         span.appendChild(label);
         span.appendChild(input);
         parent.appendChild(span);
     },
 
-    updateGoal: function(id) {
+    updateGoal: function(id, close) {
         var form = document.getElementById('goalUpdateFormHolder_' + id);
-        form.className = form.className.replace('hidden', 'vis');
+        if (close) {
+            form.className = form.className.replace('vis', 'hidden');
+        } else {
+            form.className = form.className.replace('hidden', 'vis');
+        }
+    },
+
+    toggleEmail: function(id) {
+        var field = document.getElementById(id + '_existingGoal--email');
+        if (field.value == 'on') {
+            field.value = 'off';
+        } else {
+            field.value = 'on';
+        }
+    },
+
+    makeUpdateRequest: function(id) {
         var formElements = document.getElementsByName(id + '_goalForm');
+        for (var i = 0; i < formElements.length; i++) {
+            var el = formElements[i];
+            console.log(el.className, el.id, el.value);
+
+            // existingGoal--name 540e38fba973726e93000002_existingGoal--name Amsterdam production.js:289
+            // existingGoal--amount 540e38fba973726e93000002_existingGoal--amount 2,400 production.js:289
+            // existingGoal--amountSaved 540e38fba973726e93000002_existingGoal--amountSaved 1,200 production.js:289
+            // existingGoal--date 540e38fba973726e93000002_existingGoal--date 11/31/2014 production.js:289
+            // existingGoal--email 540e38fba973726e93000002_existingGoal--email on
+
+
+        }
     },
 
     errorMessage: function(msg) {

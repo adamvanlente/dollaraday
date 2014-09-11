@@ -12,7 +12,10 @@ dad.highsmith = {
 
         var options = {
             customDate: true,
-            futureOnly: true
+            futureOnly: true,
+            style: {
+                disable: true
+            }
         }
 
         for (var i = 0; i < calFields.length; i++) {

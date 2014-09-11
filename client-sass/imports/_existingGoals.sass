@@ -1,0 +1,217 @@
+.existingGoals
+  h1
+    font-family: "Alegreya Sans", sans-serif
+    width: 400px
+    text-align: center
+    margin: 0 auto
+    color: rgba(255, 255, 255, 0.47)
+
+    +break-for(iphone)
+      width: 300px
+
+.goalHolder
+  display: block
+  width: 400px
+  background: rgb(240, 240, 240)
+  font-family: "montserrat", sans-serif
+  margin: 24px auto
+  color: rgba(51, 51, 51, 0.85)
+
+  +break-for(iphone)
+    text-align: center
+    width: 300px
+
+
+.existingGoal--header
+  display: block
+
+  .date
+    display: inline-block
+    vertical-align: top
+    width: 80px
+    border: 1px solid
+    margin: 12px
+    text-align: center
+    border: 1px solid rgb(128, 125, 125)
+    box-shadow: 0 2px 0px rgba(0,0,0,0.1)
+    em
+      font-style: normal
+
+    .date-date
+      display: block
+      font-size: 24px
+    .date-day
+      display: block
+      background-color: rgb(204, 197, 111)
+      font-size: 11px
+      padding: 2px
+    .date-month
+      display: block
+      font-size: 12px
+    .date-year
+      display: block
+      font-size: 15px
+      background-color: rgb(230, 225, 225)
+
+.existingGoal--header__name
+  display: inline-block
+  padding: 12px
+  font-size: 24px
+  text-shadow: 0 1px 0px rgba(190, 188, 188, 0.89)
+  vertical-align: top
+  width: 180px
+
+  +break-for(iphone)
+    display: block
+    text-align: center
+    margin: 0 auto
+
+.existingGoal--header__amount
+  display: inline-block
+  font-size: 1em
+  background-color: #a5b397
+  width: 80px
+  height: 50px
+  text-align: center
+  margin: 12px 0px
+  border: 1px solid rgb(128, 125, 125)
+  box-shadow: 0 2px 0px rgba(0,0,0,0.1)
+  vertical-align: top
+
+  label
+    display: block
+    font-size: 12px
+    text-align: center
+    background-color: rgb(209, 209, 209)
+    padding: 3px
+  em
+    display: inline
+    font-style: normal
+    font-size: 12px
+    vertical-align: top
+    border-bottom: 1px solid
+
+.existingGoal--header__button
+  display: block
+  font-family: "Alegreya Sans", sans-serif
+  font-weight: 900
+  margin: 0
+  -webkit-appearance: none
+  border: none
+  background-color: #f0ac76
+  padding: 6px
+  width: 100%
+  cursor: pointer
+  font-size: 22px
+  color: rgba(255,255,255,0.3)
+  +trans($easybreezy)
+
+  &:hover
+    color: rgba(255,255,255,0.5)
+
+
+.goalUpdateFormHolder
+  display: block
+  position: absolute
+  left: 0
+  right: 0
+  +trans($easyslider)
+
+  &.hidden
+    top: -3000px
+
+  &.vis
+    top: 100px
+
+    +break-for(iphone)
+      top: 0
+
+.goalUpdateForm
+  display: block
+  width: 450px
+  background: rgb(250, 248, 248)
+  margin: 0 auto
+  border: 1px solid rgb(151, 148, 148)
+  box-shadow: 0 2px 2px rgba(0,0,0,0.2)
+
+  +break-for(iphone)
+    width: 100%
+
+  span
+    display: block
+    padding: 4px
+    margin-left: 24px
+    +break-for(iphone)
+      margin-left: 0px
+
+    label
+      display: inline-block
+      width: 170px
+      font-size: 12px
+      vertical-align: middle
+      +break-for(iphone)
+        color: black
+        font-size: 11px
+        color: #DCDCDC
+    input
+      display: inline-block
+      padding: 6px 12px
+      width: 180px
+      -webkit-appearance: none
+      border: none
+      background: none
+      border-bottom: 1px solid rgba(51, 51, 51, 0.27)
+      font-family: "Alegreya Sans", sans-serif
+      font-size: 20px
+      color: rgba(51, 51, 51, 0.91)
+      +break-for(iphone)
+        text-align: center
+        padding: 8px
+        font-size: 16px
+
+  button.update
+    display: block
+    margin: 0
+    -webkit-appearance: none
+    border: none
+    background-color: rgb(218, 221, 136)
+    width: 100%
+    text-align: center
+    padding: 12px
+    font-family: "Alegreya Sans", sans-serif
+    font-weight: 800
+    font-size: 20px
+    color: #666262
+    margin-top: 12px
+    cursor: pointer
+    +trans($easyslider)
+    &:hover
+      background-color: #8494A0
+      color: #E4DDDD
+    +break-for(iphone)
+      padding: 24px
+
+  button.cancel
+    display: block
+    margin: 0
+    -webkit-appearance: none
+    border: none
+    background-color: #D3A480
+    width: 100%
+    text-align: center
+    padding: 6px
+    font-family: "Alegreya Sans", sans-serif
+    font-size: 15px
+    color: rgba(255, 255, 255, 0.4)
+    cursor: pointer
+    +trans($easyslider)
+    &:hover
+      color: white
+    +break-for(iphone)
+      padding: 12px
+
+.existingGoal--email
+  cursor: pointer
+  +trans($easyslider)
+  &:hover
+    opacity: 0.7

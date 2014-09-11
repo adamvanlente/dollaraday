@@ -1,0 +1,137 @@
+.highsmithCal
+  display: block
+  position: fixed
+  z-index: 2
+  top: 80px
+  left: 25%
+  right: 25%
+  background-color: rgb(241, 237, 237)
+  border-radius: 1px
+  box-shadow: 0 2px 0 rgba(0,0,0,0.2)
+  font-family: "Alegreya Sans", sans-serif
+
+  +break-for(iphone)
+    top: 0
+    left: 0
+    right: 0
+
+.highsmithCal--month
+  display: block
+  text-align: center
+  background-color: rgb(243, 243, 243)
+  padding: 6px
+.highsmithCal--month__label
+  display: inline-block
+  font-weight: 800
+  font-size: 24px
+  color: rgba(128, 121, 115, 0.81)
+  width: 200px
+  +break-for(iphone)
+    width: 150px
+.highsmithCal--month__increment
+  display: inline-block
+  width: 20%
+  text-align: right
+  cursor: pointer
+  +trans($easybreezy)
+  &:hover
+    opacity: 0.8
+    cursor: pointer
+.highsmithCal--month__decrement
+  display: inline-block
+  width: 20%
+  text-align: left
+  cursor: pointer
+  +trans($easybreezy)
+  &:hover
+    opacity: 0.8
+    cursor: pointer
+.highsmithCal--year
+  display: block
+  background-color: rgb(216, 216, 216)
+  text-align: center
+.highsmithCal--year__label
+  display: inline-block
+  font-weight: 800
+  font-size: 24px
+  color: rgba(128, 121, 115, 0.81)
+  width: 200px
+  +break-for(iphone)
+    padding: 2px
+  +break-for(iphone)
+    width: 150px
+.highsmithCal--year__increment
+  display: inline-block
+  width: 20%
+  text-align: left
+  cursor: pointer
+  +trans($easybreezy)
+  &:hover
+    opacity: 0.8
+    cursor: pointer
+.highsmithCal--year__decrement
+  display: inline-block
+  width: 20%
+  text-align: right
+  cursor: pointer
+  +trans($easybreezy)
+  &:hover
+    opacity: 0.8
+    cursor: pointer
+.highsmithCal--daysLegend
+  display: block
+  text-align: left
+  margin-left: 25px
+  +break-for(iphone)
+    margin-left: 10px
+.highsmithCal--daysLegend__label
+  display: inline-block
+  width: 10%
+  background-color: rgb(228, 228, 228)
+  text-align: center
+  margin: 4px
+  padding: 6px 4px
+  +break-for(iphone)
+    padding: 2px
+.highsmithCal--dayHolder
+  display: block
+  text-align: left
+  margin-left: 25px
+  +break-for(iphone)
+    margin-left: 10px
+.highsmithCal--dayHolder__nullLabel
+  display: inline-block
+  width: 10%
+  background-color: #E0DEA2
+  text-align: center
+  margin: 4px
+  padding: 6px 4px
+  height: 19px
+  vertical-align: top
+  +break-for(iphone)
+    padding: 2px
+.highsmithCal--dayHolder__label
+  display: inline-block
+  width: 10%
+  text-align: center
+  margin: 4px
+  padding: 6px 4px
+  +break-for(iphone)
+    padding: 2px
+  +trans($easybreezy)
+  &:hover
+    background-color: #D4D0D0
+    cursor: pointer
+.highsmithCal--killButton
+  display: block
+.highsmithCal--resetButton
+  display: block
+.highsmithCal--offClicker
+  display: block
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  z-index: 1
+  background-color: rgba(255,255,255,0.2)

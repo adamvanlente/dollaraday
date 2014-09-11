@@ -5,14 +5,20 @@ block append content
   include components/header
 
   if (user)
+
+    include components/existingGoals
+
+    input(type="hidden", value="#{user.id}", id="userId")
+    if (user.local.email)
+      input(type="hidden", value="#{user.local.email}", id="userEmail")
     if (user.github.email)
-      div.user
-        | logged in with github
+      input(type="hidden", value="#{user.github.email}", id="userEmail")
+    if (user.google.email)
+      input(type="hidden", value="#{user.google.email}", id="userEmail")
 
-    include components/dad-form
+    include components/scripts
 
-    include components/goal-list
-
+    script(type="text/javascript").
+      dad.main.getExistingGoals();
   else
-
     include components/intro

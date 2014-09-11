@@ -34,7 +34,7 @@ var Goal = function() {
 
     // Find many Goals at once by user.  Allow for sorting.
     var _findMany = function(userId, sortParams, callback) {
-        _model.find({ 'goalUser' : userId}, {}, sortParams,
+        _model.find({ 'goalUser' : userId }, {}, sortParams,
             function(err, results) {
 
             if(err) {

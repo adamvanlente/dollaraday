@@ -169,6 +169,9 @@ function getGoalsBody(goals) {
     for (var i = 0; i < goals.length; i++) {
 
         var goal = goals[i];
+        goal.goalAmount = goal.goalAmount.replace(/,/g, '');
+        goal.goalAmountSaved = goal.goalAmountSaved.replace(/,/g, '');
+        goal.dollarsPerDay = goal.dollarsPerDay.replace(/,/g, '');
         if (goal.emailAlerts == 'on') {
             goalsBody +=
                 '<div style="' +

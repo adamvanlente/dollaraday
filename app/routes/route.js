@@ -22,22 +22,26 @@ module.exports = function(app, passport) {
  // ====================================
  // ====================================
   app.get('/', function(req, res) {
-
-			// If no user is found, show basic intro page.  Else show user's goals.
-      if (!req.user) {
-  				res.render('index.jade');
-			} else {
-
-          var sortParams = {sort: {goalName: 1}};
-          // var sortParams = {sort: {goalName: -1}, skip: start, limit: 20};
-          Goal.findMany(req.user.id, sortParams, function(results) {
-
-              // Add the results to the user object in the response.
-              req.user.results = results;
-							res.render('index.jade', { user : req.user });
-					})
-			}
+      res.render('index.jade', { user : req.user });
 	});
+
+
+  app.get('/userGoals/:id/:sortParam', function(req, res) {
+
+      var id                = req.params.id;
+      var sortParam         = req.params.sortParam;
+      var sortParams        = {sort: {goalName: 1}};
+      if (sortParam == 'goalName') {
+          sortParams        = {sort: {goalName: 1}};
+      }
+      // var sortParams = {sort: {goalName: -1}, skip: start, limit: 20};
+      Goal.findMany(id, sortParams, function(results) {
+
+          // Add the results to the user object in the response.
+          res.json(results)
+
+      })
+  });
 
 
   // ====================================

@@ -60,6 +60,12 @@
   text-shadow: 0 1px 0px rgba(190, 188, 188, 0.89)
   vertical-align: top
   width: 180px
+  em
+    display: block
+    font-style: normal
+    font-size: 12px
+    color: rgb(211, 203, 203)
+    text-shadow: none
 
   +break-for(iphone)
     display: block
@@ -112,7 +118,7 @@
 
 .goalUpdateFormHolder
   display: block
-  position: absolute
+  position: fixed
   left: 0
   right: 0
   +trans($easyslider)
@@ -189,7 +195,8 @@
       background-color: #8494A0
       color: #E4DDDD
     +break-for(iphone)
-      padding: 24px
+      padding: 12px
+      font-size: 16px
 
   button.cancel
     display: block
@@ -206,12 +213,114 @@
     cursor: pointer
     +trans($easyslider)
     &:hover
-      color: white
+      opacity: 0.9
     +break-for(iphone)
-      padding: 12px
+      padding: 8px
+
+  button.delete
+    display: block
+    margin: 0
+    -webkit-appearance: none
+    border: none
+    background-color: #D38080
+    width: 100%
+    text-align: center
+    padding: 6px
+    font-family: "Alegreya Sans", sans-serif
+    font-size: 15px
+    color: white
+    cursor: pointer
+    +trans($easyslider)
+    &:hover
+      opacity: 0.9
+    +break-for(iphone)
+      padding: 8px
 
 .existingGoal--email
   cursor: pointer
   +trans($easyslider)
   &:hover
     opacity: 0.7
+
+
+.confirmDelete
+  display: block
+  position: fixed
+  left: 0
+  right: 0
+  z-index: 5
+  +trans($easyslider)
+
+  &.hidden
+    top: -3000px
+
+  &.vis
+    top: 100px
+
+    +break-for(iphone)
+      top: 0
+
+.confirmDeleteHolder
+  display: block
+  width: 500px
+  background: #dd7878
+  margin: 0 auto
+  border: 1px solid #7C7979
+  box-shadow: 0 0 5px rgba(0,0,0,0.2)
+  +break-for(iphone)
+    width: 300px
+  p
+    display: block
+    text-align: center
+    padding: 12px
+    color: white
+    font-family: "Alegreya Sans", sans-serif
+    font-size: 22px
+
+  button
+    display: block
+    margin: 0
+    -webkit-appearance: none
+    border: none
+    width: 100%
+    padding: 12px
+    font-family: "Alegreya Sans", sans-serif
+    cursor: pointer
+    +trans($easybreezy)
+  button.confirm
+    font-size: 16px
+    font-weight: 800
+    background-color: rgb(84, 132, 165)
+    color: rgb(202, 220, 235)
+    &:hover
+      color: rgb(84, 132, 165)
+      background-color: rgb(202, 220, 235)
+
+  button.cancel
+    font-size: 16px
+    font-weight: 800
+    color: #5A5959
+    background-color: rgb(204, 204, 126)
+    &:hover
+      background-color: #5A5959
+      color: rgb(204, 204, 126)
+
+
+.noGoalsFound
+  display: block
+  width: 400px
+  margin: 24px auto
+  text-align: center
+  padding: 24px 0
+  border: 1px solid #fff
+  font-family: montserrat, sans-serif
+  color: #fff
+  border-radius: 1px
+  box-shadow: 0 2px 0px rgba(0,0,0,0.1)
+  +break-for(iphone)
+    width: 300px
+
+  label
+    display: block
+    font-size: 24px
+    margin-top: 24px

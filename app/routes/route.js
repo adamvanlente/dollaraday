@@ -46,10 +46,10 @@ module.exports = function(app, passport) {
 
   // ====================================
   // ====================================
-  // CREATE A NEW GOAL (post only) ======
+  // CREATE A NEW GOAL ==================
   // ====================================
   // ====================================
-  app.post('/goal/:user/:name/:amount/:saved/:date/:alerts/:userEmail',
+  app.get('/goal/:user/:name/:amount/:saved/:date/:alerts/:userEmail',
       function(req, res) {
 
 			// Get the params from the request.
@@ -83,7 +83,7 @@ module.exports = function(app, passport) {
 
   // ====================================
   // ====================================
-  // UPDATE EXISTING GOAL (post only) ===
+  // UPDATE EXISTING GOAL ===============
   // ====================================
   // ====================================
   app.get('/updategoal/:id/:name/:amount/:saved/:date/:alerts', function(req, res) {
@@ -103,8 +103,11 @@ module.exports = function(app, passport) {
 
   });
 
-  app.get('/updategoal', function(req, res){
-      res.json(['thing']);
+  app.get('/removeGoal/:id', function(req, res){
+      var id = req.params.id;
+      Goal.remove(id, function(result) {
+          res.json(result);
+      })
   })
 
   // ====================================

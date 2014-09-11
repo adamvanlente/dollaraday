@@ -1,0 +1,17 @@
+div(class="addNewGoal", onclick="dad.main.createNewGoal()")
+  | add new goal
+
+
+div.newGoalHolder.hidden#newGoalHolder
+  div.newGoalForm
+    input.newGoal--name#newGoal--name(placeholder="name of goal eg. 'New Car'", name="newgoal-input")
+    input.newGoal--amount#newGoal--amount(placeholder="amount to save eg. 2400", name="newgoal-input")
+    input.newGoal--amountSaved#newGoal--amountSaved(placeholder="amount already saved eg. 200", name="newgoal-input")
+    input.newGoal--date#newGoal--date(placeholder="pick a date", name="newgoal-input")
+    label
+      | email alerts
+      input.newGoal--email#newGoal--email(value="on", onclick="dad.main.toggleEmail('newGoal--email')", readOnly="true")
+    button.create(onclick="dad.main.validateNewGoalForm()")
+      | create new goal
+    button.cancel(onclick="dad.main.createNewGoal('true')")
+      | cancel

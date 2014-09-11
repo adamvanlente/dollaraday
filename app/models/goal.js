@@ -57,6 +57,19 @@ var Goal = function() {
 
     }
 
+    // Find one goal by its _id.
+    var _remove = function(id, callback) {
+        _model.findOne({ '_id': id }, function(err, goal) {
+            if(err) {
+                fail(err);
+            } else {
+                goal.remove();
+                callback(goal);
+            }
+        });
+
+    }
+
     // Update an existing Goal.
     var _update = function(id, updates, callback) {
 
@@ -99,6 +112,7 @@ var Goal = function() {
         schema: _schemaModel,
         findById: _findById,
         update: _update,
+        remove: _remove,
         model: _model
     }
 }();

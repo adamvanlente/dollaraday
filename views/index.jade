@@ -6,6 +6,8 @@ block append content
 
   if (user)
 
+    include components/newGoal
+
     include components/existingGoals
 
     input(type="hidden", value="#{user.id}", id="userId")

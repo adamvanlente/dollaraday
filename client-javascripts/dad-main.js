@@ -51,8 +51,82 @@ dad.main = {
             goalHolder.appendChild(header);
             goalHolder.appendChild(span);
             goalDiv.appendChild(goalHolder);
-
             dad.highsmith.set();
+        }
+
+        if (!goals || !goals.length || goals.length == 0) {
+            var noGoals = dad.main.create('div');
+            noGoals.className = 'noGoalsFound';
+            noGoals.innerHTML = 'You have no goals!<br>You should create some.';
+
+            var calLabel = dad.main.create('label');
+            calLabel.innerHTML = '<i class="fa fa-calendar"></i>';
+            noGoals.appendChild(calLabel);
+
+            goalDiv.appendChild(noGoals);
+            dad.highsmith.set();
+        }
+
+    },
+
+    createNewGoal: function(close) {
+      var newGoalDiv = document.getElementById('newGoalHolder');
+      newGoalDiv.className = newGoalDiv.className.replace('hidden', 'vis');
+      if (close) {
+          newGoalDiv.className = newGoalDiv.className.replace('vis', 'hidden');
+          dad.main.clearFormErrors();
+      }
+      var inputs = document.getElementsByName('newgoal-input');
+      for (var i = 0; i < inputs.length; i++) {
+          var input = inputs[i];
+          input.value = '';
+      }
+    },
+
+    validateNewGoalForm: function() {
+        var errorInputs = [];
+
+        var name = document.getElementById('newGoal--name').value;
+        if (name == '') {
+            errorInputs.push('newGoal--name');
+        }
+
+        var amount = document.getElementById('newGoal--amount').value;
+        amount = amount.replace(/\$/g, '');
+        amount = amount.replace(/,/g, '');
+
+        var amountSaved = document.getElementById('newGoal--amountSaved').value;
+        amountSaved = amountSaved.replace(/\$/g, '');
+        amountSaved = amountSaved.replace(/,/g, '');
+
+        if (amount == '' || isNaN(parseInt(amount))) {
+            errorInputs.push('newGoal--amount');
+        }
+
+        if (amountSaved == '' || isNaN(parseInt(amountSaved))) {
+            errorInputs.push('newGoal--amountSaved');
+        }
+
+        var date = document.getElementById('newGoal--date').value;
+        var testDate = new Date(date);
+        if (date == '' || testDate == 'Invalid Date') {
+            errorInputs.push('newGoal--date');
+        }
+
+        var alerts = document.getElementById('newGoal--email').value;
+
+        if (errorInputs.length > 0) {
+            dad.main.showFormErrors(errorInputs);
+        } else {
+            var userId = document.getElementById('userId').value;
+            var userEmail = document.getElementById('userEmail').value;
+
+            date = date.replace(/\//g, 'slash');
+
+            var url = '/goal/' + userId + '/' + name + '/' + amount + '/' +
+                amountSaved + '/' + date + '/' + alerts + '/' + userEmail;
+            dad.main.ajax(url, dad.main.successMessage, dad.main.errorMessage);
+            dad.main.createNewGoal(true);
         }
     },
 
@@ -63,6 +137,9 @@ dad.main = {
         var span = dad.main.create('span');
         span.className = 'existingGoal--header__name';
         span.innerHTML = goal.goalName;
+        var em = dad.main.create('em');
+        em.innerHTML = 'email alerts: ' + goal.emailAlerts;
+        span.appendChild(em);
         div.appendChild(span);
 
         var amountLabel = dad.main.create('label');
@@ -150,6 +227,14 @@ dad.main = {
         cancelButton.className = 'cancel';
         span.appendChild(cancelButton);
 
+        var deleteButton = dad.main.create('button');
+        var onclick =
+            'dad.main.removeGoal(\'' + goal._id + '\', \'' + true + '\')';
+        deleteButton.innerHTML = 'delete';
+        deleteButton.setAttribute('onclick', onclick);
+        deleteButton.className = 'delete';
+        span.appendChild(deleteButton);
+
         div.appendChild(span);
 
         return div;
@@ -173,7 +258,8 @@ dad.main = {
         input.name = id + '_goalForm';
         if (className == 'existingGoal--email') {
             input.readOnly = true;
-            var onclick = 'dad.main.toggleEmail(\'' + id + '\')';
+            var onclick = 'dad.main.toggleEmail(\'' + id +
+                '_existingGoal--email'  + '\')';
             input.setAttribute('onclick', onclick);
         }
 
@@ -186,13 +272,14 @@ dad.main = {
         var form = document.getElementById('goalUpdateFormHolder_' + id);
         if (close) {
             form.className = form.className.replace('vis', 'hidden');
+            dad.main.clearFormErrors();
         } else {
             form.className = form.className.replace('hidden', 'vis');
         }
     },
 
     toggleEmail: function(id) {
-        var field = document.getElementById(id + '_existingGoal--email');
+        var field = document.getElementById(id);
         if (field.value == 'on') {
             field.value = 'off';
         } else {
@@ -262,23 +349,30 @@ dad.main = {
 
         var msg = 'Some form fields are incorrect.';
         dad.main.errorMessage(msg);
-
-        dad.main.clearFormErrors();
     },
 
     clearFormErrors: function() {
-        setTimeout(function() {
+        var timer = setTimeout(function() {
             var errors = document.getElementsByClassName('error-input');
             for (var i = 0; i < errors.length; i++) {
                 var el = errors[i];
+
                 el.className = el.className.replace('error-input', '');
                 el.style.backgroundColor = '#faf8f8';
             }
-        }, dad.main.timeoutInterval);
+
+            var errors = document.getElementsByClassName('error-input');
+
+            if (errors.length > 0) {
+                dad.main.clearFormErrors();
+            }
+
+        }, 50);
+
     },
 
     makeUpdateRequest: function(url) {
-        console.log(url);
+
         dad.main.ajax(url, dad.main.successMessage, dad.main.errorMessage)
     },
 
@@ -297,19 +391,69 @@ dad.main = {
     },
 
     successMessage: function(data) {
-        console.log(data)
-        var msg = 'updated stuff';
+        var msg = 'updated your goal ' + data.goalName;
         var successDiv = document.getElementById('successMessage');
         var successMsg = document.getElementById('successMessageContent');
 
         successDiv.className = successDiv.className.replace('hidden', 'vis');
         successMsg.innerHTML = msg;
 
+        dad.main.getExistingGoals();
+
         setTimeout(function() {
           document.getElementById('successMessage').className =
               document.getElementById(
                 'successMessage').className.replace('vis', 'hidden');
         }, dad.main.timeoutInterval);
+    },
+
+    removeGoal: function(id) {
+        dad.main.updateGoal(id, true);
+        var confirmationDiv = document.getElementById('confirmDelete');
+        confirmationDiv.innerHTML = '';
+        confirmationDiv.className =
+            confirmationDiv.className.replace('hidden', 'vis');
+
+        var holder = dad.main.create('div');
+        holder.className = 'confirmDeleteHolder';
+
+        var par = dad.main.create('p');
+        par.innerHTML = 'Are you sure you want to delete this goal?';
+        holder.appendChild(par);
+
+        var cancelButton = dad.main.create('button');
+        cancelButton.innerHTML = 'cancel';
+        cancelButton.className = 'cancel';
+        var onclick = 'dad.main.cancelDeleting(\'' + id + '\');'
+        cancelButton.setAttribute('onclick', onclick);
+        holder.appendChild(cancelButton);
+
+        var confirmButton = dad.main.create('button');
+        confirmButton.innerHTML = 'confirm';
+        confirmButton.className = 'confirm';
+        var onclick = 'dad.main.confirmDelete(\'' + id + '\')';
+        confirmButton.setAttribute('onclick', onclick);
+        holder.appendChild(confirmButton);
+
+        confirmationDiv.appendChild(holder);
+    },
+
+    cancelDeleting: function(id) {
+        var confirmationDiv = document.getElementById('confirmDelete');
+        confirmationDiv.className =
+            confirmationDiv.className.replace('vis', 'hidden');
+        dad.main.updateGoal(id);
+    },
+
+    confirmDelete: function(id) {
+        var url = '/removeGoal/' + id;
+        dad.main.ajax(url, dad.main.deleteSuccess, dad.main.errorMessage);
+    },
+
+    deleteSuccess: function(data) {
+        var msg = 'deleted goal: ' + data.goalName;
+        dad.main.cancelDeleting(data._id);
+        dad.main.getExistingGoals();
     },
 
     ajax: function(url, successCb, errorCb) {
@@ -320,7 +464,7 @@ dad.main = {
                 successCb(data);
             },
             error: function(err) {
-                errorCb(error);
+                errorCb(err);
             }
         });
     }

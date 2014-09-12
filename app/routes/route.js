@@ -103,6 +103,11 @@ module.exports = function(app, passport) {
 
   });
 
+  // ====================================
+  // ====================================
+  // REMOVE A GOAL ======================
+  // ====================================
+  // ====================================
   app.get('/removeGoal/:id', function(req, res){
       var id = req.params.id;
       Goal.remove(id, function(result) {

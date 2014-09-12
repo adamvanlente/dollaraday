@@ -137,9 +137,17 @@ dad.main = {
         var span = dad.main.create('span');
         span.className = 'existingGoal--header__name';
         span.innerHTML = goal.goalName;
+
+        var amt = dad.main.create('em');
+        amt.className = 'goalAmount';
+        amt.innerHTML = 'Goal: $' + dad.main.currencyFormat(goal.goalAmount);
+        span.appendChild(amt);
+
         var em = dad.main.create('em');
+        em.className = 'email';
         em.innerHTML = 'email alerts: ' + goal.emailAlerts;
         span.appendChild(em);
+
         div.appendChild(span);
 
         var amountLabel = dad.main.create('label');
@@ -454,6 +462,30 @@ dad.main = {
         var msg = 'deleted goal: ' + data.goalName;
         dad.main.cancelDeleting(data._id);
         dad.main.getExistingGoals();
+    },
+
+    currencyFormat: function(amount) {
+
+        // Separate dollars from cents.
+        var dollars = amount.split('.')[0];
+        var cents   = amount.split('.')[1]
+
+        // Create a new var for dollars.
+        var newDollars = '';
+        var counter = 0;
+        var dollarArray = dollars.split('');
+
+        // Iterate over dollars backwards, and add a comma every third item.
+        for (var i = dollarArray.length - 1; i >= 0; i--) {
+            counter++;
+
+            // Add comma every third digit.
+            comma = counter % 3 == 0 && i > 0 ? ',' : '';
+            newDollars = comma + String(dollarArray[i]) + newDollars;
+        }
+
+        // Be sure to add cents back on if they exist.
+        return cents ? newDollars + '.' + cents : newDollars;
     },
 
     ajax: function(url, successCb, errorCb) {

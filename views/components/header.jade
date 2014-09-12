@@ -1,9 +1,10 @@
 div.header
-  //- span.header--logo
-  //-   label(class="fa fa-dollar")
   span.header--image
   span.header--text
     | dollar a day
+  if (user)
+    a.logoutButton(href="/logout")
+      | logout
 
 div(class="errorMessage hidden", id="errorMessage")
   span.errorMessageContent#errorMessageContent

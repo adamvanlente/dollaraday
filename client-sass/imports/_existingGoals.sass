@@ -60,11 +60,17 @@
   text-shadow: 0 1px 0px rgba(190, 188, 188, 0.89)
   vertical-align: top
   width: 180px
-  em
+  em.email
     display: block
     font-style: normal
     font-size: 12px
     color: rgb(211, 203, 203)
+    text-shadow: none
+  em.goalAmount
+    display: block
+    font-style: normal
+    font-size: 16px
+    color: #C9A87E
     text-shadow: none
 
   +break-for(iphone)
@@ -77,7 +83,7 @@
   font-size: 1em
   background-color: #a5b397
   width: 80px
-  height: 50px
+  height: auto
   text-align: center
   margin: 12px 0px
   border: 1px solid rgb(128, 125, 125)
@@ -90,6 +96,7 @@
     text-align: center
     background-color: rgb(209, 209, 209)
     padding: 3px
+    margin-top: 4px
   em
     display: inline
     font-style: normal

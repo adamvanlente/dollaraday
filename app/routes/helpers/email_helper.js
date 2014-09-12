@@ -139,15 +139,25 @@ function sendAnEmail(usr) {
             'border-radius:3px;border:1px solid #5EB858;">' +
             '<a href="http://www.dollaraday.io" ' +
             'style="text-decoration:none;color:#5EB858;">' +
-            'stop by and update your goals!</a>' +
+            'update your goals and alerts</a>' +
           '</div>' +
         '</div>';
+
+    var monthList   = [ 'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'];
+
+    var today = new Date();
+
+    var day = today.getDate();
+    var month = monthList[today.getMonth()];
+
+    var dString = month + ' ' + day;
 
     // Email business.
     var mailOptions = {
         from: 'Dollar a Day <dollaradayio@gmail.com>', // sender address
         to: usr.email, // list of receivers
-        subject: 'Update from Dollar a Day!', // Subject line
+        subject: 'Update from Dollar a Day: ' + dString, // Subject line
         html: htmlBody // html body
     };
 
